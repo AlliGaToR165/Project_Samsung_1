@@ -6,140 +6,89 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+
 import com.mygdx.game.InputHandler;
 import com.mygdx.game.Score;
 import com.mygdx.game.sprite.Duck;
+import com.mygdx.game.Background;
 
 public class PlayState extends AbstractState{
     private BitmapFont font;
-    private Texture sight;
-    private Texture background1, background2,background3,background4;
-    float xMax, xCoordBg1, xCoordBg2,xCoordBg3,xCoordBg4;
-    private Texture grass;
-    private Texture ground;
-    private int score;
-    private int ducks_count;
-    private Duck[] ducks;
-    final int BACKGROUND_MOVE_SPEED = 50;
-    private int v, Number,isReversed;
+    private Background bg;
+    private Texture sight, grass, ground;
+    private int score = 0, ducks_count, counter = 0;
+    private float multiplier = 1;
+    private Duck current;
+
+    private Duck generateDuck(){
+        int isReversed = MathUtils.random(0,1);
+        return (isReversed==1 ?
+        new Duck(new Vector2(Gdx.graphics.getWidth()+256, -252), new Vector2(-1.5f, 1.0f).scl(multiplier),isReversed) :
+        new Duck(new Vector2(-256, -252), new Vector2(1.5f, 1.0f).scl(multiplier),isReversed));
+    }
 
     public PlayState(GameStateManager gsm, int ducks_count) {
         super(gsm);
         this.ducks_count = ducks_count;
-        background1 = new Texture("sky.jpg");
-        background2 = new Texture("sky.jpg");
-        background3 = new Texture("sky.jpg");
-        background4 = new Texture("sky.jpg");
         sight = new Texture("sight.png");
         font = new BitmapFont(Gdx.files.internal("myfont.fnt"),Gdx.files.internal("myfont.png"),false);
         grass = new Texture("grass.png");
         ground = new Texture("ground.png");
-        score = 0;
-        ducks = new Duck[ducks_count];
-        Number=0;
-
-        for(int i=0;i<ducks_count;i++) {
-            isReversed = MathUtils.random(0,1);
-            if(isReversed==1){
-                ducks[i] = new Duck(new Vector2(Gdx.graphics.getWidth()+256, -252), new Vector2(-1.5f, 1.0f),isReversed);
-            }
-            else{
-                ducks[i] = new Duck(new Vector2(-256, -252), new Vector2(1.5f, 1.0f),isReversed);
-            }
-        }
-        xMax = background1.getWidth();
-        xCoordBg1 = 0;
-        xCoordBg2=xCoordBg1+xMax;
-        xCoordBg3=xCoordBg2+xMax;
-        xCoordBg4=xCoordBg3+xMax;
-        v=1;
+        current = generateDuck();
+        bg = new Background();
     }
 
     @Override
     public void update(float delta) {
-        xCoordBg1 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg2 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg3 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg4 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        for(int i=0;i<Number+1;i++){
-            ducks[i].update(delta);
-        }
-        switch (v) {
-            case 2:
-                if (xCoordBg2 + xMax <= 0) {
-                    xCoordBg2 = xCoordBg1 + xMax;
-                    v = 3;
-                }
-            case 3:
-                if (xCoordBg3 + xMax <= 0) {
-                    xCoordBg3 = xCoordBg2 + xMax;
-                    v = 4;
-                }
-            case 4:
-                if (xCoordBg4 + xMax <= 0) {
-                    xCoordBg4 = xCoordBg3 + xMax;
-                    v = 1;
-                }
-            case 1:
-                if (xCoordBg1 + xMax <= 0) {
-                    xCoordBg1 = xCoordBg4 + xMax;
-                    v = 2;
-                }
-        }
+        bg.update(delta);
+        current.update(delta);
+        if(current.isDead()) {current = generateDuck(); multiplier += 0.1;}
     }
 
     @Override
     public void render(SpriteBatch batch) {
+        bg.draw(batch);
         batch.begin();
-        batch.draw(background1,xCoordBg1,-50);
-        batch.draw(background2,xCoordBg2,-50);
-        batch.draw(background3,xCoordBg3,-50);
-        batch.draw(background4,xCoordBg4,-50);
-        for(int i=0;i<ducks_count;i++) {
-            ducks[i].render(batch);
-        }
+        current.render(batch);
         if (InputHandler.isClicked()) {
-            if (ducks[Number].getBounds().contains(InputHandler.getMousePosition().x,InputHandler.getMousePosition().y))
+            if (current.getBounds().contains(InputHandler.getMousePosition().x,InputHandler.getMousePosition().y))
             {
-                ducks[Number].setKilled(true);
+                current.kill();
                 score++;
                 Score.setScores(score);
-                Number++;
+                counter++;
             }
         }
         font.draw(batch, "Scores: " + score, 10,Gdx.graphics.getHeight() - 20);
-        int x = 0;
+
+            int x = 0;
             do {
                 batch.draw(ground, x, 0);
                 batch.draw(grass, -30 + x, -80);
                 x += ground.getWidth();
             } while (x <= Gdx.graphics.getWidth());
+
             batch.draw(sight, InputHandler.getMousePosition().x - sight.getWidth() / 2, InputHandler.getMousePosition().y - sight.getHeight() / 2);
-            if (((ducks[ducks_count - 1].getBounds().x - ducks[ducks_count - 1].getBounds().width > Gdx.graphics.getWidth()) && ducks[ducks_count - 1].getReversed() == 0)
-                    || (ducks[ducks_count - 1].getBounds().x + ducks[ducks_count - 1].getBounds().width < 0 && ducks[ducks_count - 1].getReversed() == 1)) {
+
+            if (((current.getBounds().x - current.getBounds().width > Gdx.graphics.getWidth()) && current.getReversed() == 0)
+                    || (current.getBounds().x + current.getBounds().width < 0 && current.getReversed() == 1)) {
                 gsm.set(new GameOverState(gsm, ducks_count, false));
             }
-            else if(ducks[ducks_count - 1].isKilled()) gsm.set(new GameOverState(gsm, ducks_count, true));
-            else if((((ducks[Number].getBounds().x -ducks[Number].getBounds().width> Gdx.graphics.getWidth()) && ducks[Number].getReversed()==0)
-                    ||( (ducks[Number].getBounds().x+ducks[Number].getBounds().width<0) && (ducks[Number].getReversed()==1)))){
-                Number++;
+            else if(counter == ducks_count) gsm.set(new GameOverState(gsm, ducks_count, true));
+            else if((((current.getBounds().x -current.getBounds().width> Gdx.graphics.getWidth()) && current.getReversed()==0)
+                    ||( (current.getBounds().x+current.getBounds().width<0) && (current.getReversed()==1)))){
+                counter++;
             }
-            batch.end();
-        }
-
+        batch.end();
+    }
 
     @Override
     public void dispose() {
         sight.dispose();
-        for (int i = 0; i < ducks_count; i++) {
-            ducks[i].dispose();
-        }
+        current.dispose();
         font.dispose();
         grass.dispose();
-        background1.dispose();
-        background2.dispose();
-        background3.dispose();
-        background4.dispose();
+        bg.dispose();
         ground.dispose();
     }
 }

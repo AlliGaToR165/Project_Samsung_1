@@ -62,6 +62,12 @@ public class Duck {
         }
     }
 
+    public void kill(){
+        isKilled = true;
+    }
+    public boolean isDead(){
+        return ((position.y + HEIGHT < 0) && isKilled);
+    }
     public Vector2 getPosition() {
         return position;
     }
@@ -86,14 +92,6 @@ public class Duck {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
-    }
-
-    public boolean isKilled() {
-        return isKilled;
-    }
-
-    public void setKilled(boolean killed) {
-        isKilled = killed;
     }
 
     public Rectangle getBounds() {

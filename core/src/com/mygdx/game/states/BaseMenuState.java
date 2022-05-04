@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+import com.mygdx.game.Background;
+
 public class BaseMenuState extends AbstractState{
     private class DuckCountIL implements TextInputListener {
        @Override
@@ -27,13 +29,11 @@ public class BaseMenuState extends AbstractState{
        public void canceled () {}
     }
 
+    private Background bg;
+
     private DuckCountIL duckCountInput;
     protected BitmapFont defaultFont, hack;
-    private Texture background1, background2,background3,background4;
     protected TextButton mainButton, setCount;
-    private float xMax, xCoordBg1, xCoordBg2,xCoordBg3,xCoordBg4;
-    final int BACKGROUND_MOVE_SPEED = 50;
-    private int v;
     protected int ducks=3;
     protected Stage stage;
 
@@ -53,18 +53,7 @@ public class BaseMenuState extends AbstractState{
         stage.addActor(setCount);
 
         duckCountInput = new DuckCountIL();
-
-        background1 = new Texture("sky.jpg");
-        background2 = new Texture("sky.jpg");
-        background3 = new Texture("sky.jpg");
-        background4 = new Texture("sky.jpg");
-
-        xMax = background1.getWidth();
-        xCoordBg1 = 0;
-        xCoordBg2=xCoordBg1+xMax;
-        xCoordBg3=xCoordBg2+xMax;
-        xCoordBg4=xCoordBg3+xMax;
-        v=1;
+        bg = new Background();
     }
 
     public BaseMenuState(GameStateManager gsm, String buttonText, String buttonImgPath, int ducks) {
@@ -82,44 +71,13 @@ public class BaseMenuState extends AbstractState{
 
     @Override
     public void update(float delta) {
-        xCoordBg1 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg2 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg3 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg4 -= BACKGROUND_MOVE_SPEED * Gdx.graphics.getDeltaTime();
+        bg.update(delta);
         handleInput();
-
-        switch (v){
-            case 2:
-                if (xCoordBg2+xMax<=0){
-                    xCoordBg2=xCoordBg1+xMax;
-                    v=3;
-                }
-            case 3:
-                if (xCoordBg3+xMax<=0){
-                    xCoordBg3=xCoordBg2+xMax;
-                    v=4;            }
-            case 4:
-                if (xCoordBg4+xMax<=0){
-                    xCoordBg4=xCoordBg3+xMax;
-                    v=1;
-                }
-            case 1:
-                if (xCoordBg1+xMax<=0){
-                    xCoordBg1=xCoordBg4+xMax;
-                    v=2;
-                }
-        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.begin();
-        batch.draw(background1,xCoordBg1,-50);
-        batch.draw(background2,xCoordBg2,-50);
-        batch.draw(background3,xCoordBg3,-50);
-        batch.draw(background4,xCoordBg4,-50);
-        batch.end();
-
+        bg.draw(batch);
         float delta = Gdx.graphics.getDeltaTime();
         stage.act(delta);
 	    stage.draw();
@@ -128,10 +86,7 @@ public class BaseMenuState extends AbstractState{
     @Override
     public void dispose() {
         stage.dispose();
-        background1.dispose();
-        background2.dispose();
-        background3.dispose();
-        background4.dispose();
+        bg.dispose();
         defaultFont.dispose();
         hack.dispose();
     }
