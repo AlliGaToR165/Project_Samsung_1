@@ -15,29 +15,30 @@ public class PlayState extends AbstractState{
     private Texture sight;
     private Texture background1, background2,background3,background4;
     float xMax, xCoordBg1, xCoordBg2,xCoordBg3,xCoordBg4;
-    private Texture gras;
+    private Texture grass;
     private Texture ground;
     private int score;
-    private final int DUCKS_COUNT = 3;
+    private int ducks_count;
     private Duck[] ducks;
     final int BACKGROUND_MOVE_SPEED = 50;
     private int v, Number,isReversed;
 
-    public PlayState(GameStateManager gsm) {
+    public PlayState(GameStateManager gsm, int ducks_count) {
         super(gsm);
+        this.ducks_count = ducks_count;
         background1 = new Texture("sky.jpg");
         background2 = new Texture("sky.jpg");
         background3 = new Texture("sky.jpg");
         background4 = new Texture("sky.jpg");
         sight = new Texture("sight.png");
         font = new BitmapFont(Gdx.files.internal("myfont.fnt"),Gdx.files.internal("myfont.png"),false);
-        gras = new Texture("gras.png");
+        grass = new Texture("grass.png");
         ground = new Texture("ground.png");
         score = 0;
-        ducks = new Duck[DUCKS_COUNT];
+        ducks = new Duck[ducks_count];
         Number=0;
 
-        for(int i=0;i<DUCKS_COUNT;i++) {
+        for(int i=0;i<ducks_count;i++) {
             isReversed = MathUtils.random(0,1);
             if(isReversed==1){
                 ducks[i] = new Duck(new Vector2(Gdx.graphics.getWidth()+256, -252), new Vector2(-1.5f, 1.0f),isReversed);
@@ -94,7 +95,7 @@ public class PlayState extends AbstractState{
         batch.draw(background2,xCoordBg2,-50);
         batch.draw(background3,xCoordBg3,-50);
         batch.draw(background4,xCoordBg4,-50);
-        for(int i=0;i<DUCKS_COUNT;i++) {
+        for(int i=0;i<ducks_count;i++) {
             ducks[i].render(batch);
         }
         if (InputHandler.isClicked()) {
@@ -110,15 +111,15 @@ public class PlayState extends AbstractState{
         int x = 0;
             do {
                 batch.draw(ground, x, 0);
-                batch.draw(gras, -30 + x, -80);
+                batch.draw(grass, -30 + x, -80);
                 x += ground.getWidth();
             } while (x <= Gdx.graphics.getWidth());
             batch.draw(sight, InputHandler.getMousePosition().x - sight.getWidth() / 2, InputHandler.getMousePosition().y - sight.getHeight() / 2);
-            if (((ducks[DUCKS_COUNT - 1].getBounds().x - ducks[DUCKS_COUNT - 1].getBounds().width > Gdx.graphics.getWidth()) && ducks[DUCKS_COUNT - 1].getReversed() == 0)
-                    || (ducks[DUCKS_COUNT - 1].getBounds().x + ducks[DUCKS_COUNT - 1].getBounds().width < 0 && ducks[DUCKS_COUNT - 1].getReversed() == 1)
-                    || ducks[DUCKS_COUNT - 1].isKilled()) {
-                gsm.set(new GameOverState(gsm));
+            if (((ducks[ducks_count - 1].getBounds().x - ducks[ducks_count - 1].getBounds().width > Gdx.graphics.getWidth()) && ducks[ducks_count - 1].getReversed() == 0)
+                    || (ducks[ducks_count - 1].getBounds().x + ducks[ducks_count - 1].getBounds().width < 0 && ducks[ducks_count - 1].getReversed() == 1)) {
+                gsm.set(new GameOverState(gsm, ducks_count, false));
             }
+            else if(ducks[ducks_count - 1].isKilled()) gsm.set(new GameOverState(gsm, ducks_count, true));
             else if((((ducks[Number].getBounds().x -ducks[Number].getBounds().width> Gdx.graphics.getWidth()) && ducks[Number].getReversed()==0)
                     ||( (ducks[Number].getBounds().x+ducks[Number].getBounds().width<0) && (ducks[Number].getReversed()==1)))){
                 Number++;
@@ -130,11 +131,11 @@ public class PlayState extends AbstractState{
     @Override
     public void dispose() {
         sight.dispose();
-        for (int i = 0; i < DUCKS_COUNT; i++) {
+        for (int i = 0; i < ducks_count; i++) {
             ducks[i].dispose();
         }
         font.dispose();
-        gras.dispose();
+        grass.dispose();
         background1.dispose();
         background2.dispose();
         background3.dispose();
