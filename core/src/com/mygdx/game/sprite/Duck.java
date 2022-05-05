@@ -11,17 +11,17 @@ public class Duck {
     private Vector2 velocity;
     private Rectangle bounds;
     private boolean isKilled;
-    private int isReversed;
+    private boolean isReversed;
     private float time;
     private float angle = 0;
     private final int WIDTH = 252;
     private final int HEIGHT = 256;
 
-    public Duck(Vector2 position, Vector2 velocity,int isReversed) {
+    public Duck(Vector2 position, Vector2 velocity, boolean isReversed) {
         this.position = position;
         this.velocity = velocity;
         this.isReversed=isReversed;
-        if(isReversed==1){
+        if(isReversed){
             this.texture = new Texture("duck_reversed.png");
         }
         else{
@@ -32,7 +32,7 @@ public class Duck {
 
     public void render(SpriteBatch batch) {
         int frame = (int) (time / 0.1f);
-        if(this.isReversed==1){
+        if(this.isReversed){
             frame = 3 -(frame % 4);
         }
         else{
@@ -49,7 +49,7 @@ public class Duck {
     public void update(float delta) {
         time+= delta;
         position.add(velocity);
-        if(isReversed==1){
+        if(isReversed){
             velocity.x -= 0.5f * delta;
         }
         else{
@@ -71,7 +71,7 @@ public class Duck {
     public Vector2 getPosition() {
         return position;
     }
-    public int getReversed(){
+    public boolean getReversed(){
         return isReversed;
     }
     public void setPosition(Vector2 position) {

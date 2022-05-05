@@ -21,8 +21,8 @@ public class PlayState extends AbstractState{
     private Duck current;
 
     private Duck generateDuck(){
-        int isReversed = MathUtils.random(0,1);
-        return (isReversed==1 ?
+        boolean isReversed = (boolean)MathUtils.randomBoolean();
+        return (isReversed ?
         new Duck(new Vector2(Gdx.graphics.getWidth()+256, -252), new Vector2(-1.5f, 1.0f).scl(multiplier),isReversed) :
         new Duck(new Vector2(-256, -252), new Vector2(1.5f, 1.0f).scl(multiplier),isReversed));
     }
@@ -70,13 +70,13 @@ public class PlayState extends AbstractState{
 
             batch.draw(sight, InputHandler.getMousePosition().x - sight.getWidth() / 2, InputHandler.getMousePosition().y - sight.getHeight() / 2);
 
-            if (((current.getBounds().x - current.getBounds().width > Gdx.graphics.getWidth()) && current.getReversed() == 0)
-                    || (current.getBounds().x + current.getBounds().width < 0 && current.getReversed() == 1)) {
+            if (((current.getBounds().x - current.getBounds().width > Gdx.graphics.getWidth()) && !current.getReversed())
+                    || (current.getBounds().x + current.getBounds().width < 0 && current.getReversed())) {
                 gsm.set(new GameOverState(gsm, ducks_count, false));
             }
             else if(counter == ducks_count) gsm.set(new GameOverState(gsm, ducks_count, true));
-            else if((((current.getBounds().x -current.getBounds().width> Gdx.graphics.getWidth()) && current.getReversed()==0)
-                    ||( (current.getBounds().x+current.getBounds().width<0) && (current.getReversed()==1)))){
+            else if((((current.getBounds().x -current.getBounds().width> Gdx.graphics.getWidth()) && !current.getReversed())
+                    ||( (current.getBounds().x+current.getBounds().width<0) && (current.getReversed())))){
                 counter++;
             }
         batch.end();
