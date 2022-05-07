@@ -7,19 +7,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+
 import com.mygdx.game.InputHandler;
-import com.mygdx.game.Score;
 
 public class GameOverState extends BaseMenuState{
     private Label gameOver;
 
-    public GameOverState(GameStateManager gsm, int ducks, boolean victory) {
+    public GameOverState(GameStateManager gsm, int ducks, int score, boolean victory) {
         super(gsm, "RETRY", "retry_bg.png", ducks);
         mainButton.setPosition(Gdx.graphics.getWidth()/2 - mainButton.getWidth()/2, Gdx.graphics.getHeight()/2 + mainButton.getHeight());
         setCount.setPosition(Gdx.graphics.getWidth()/2 - setCount.getWidth()/2, Gdx.graphics.getHeight()/2 - setCount.getHeight() - 1);
 
-        if(!victory) gameOver = new Label("Game over!\nScore: "+Score.getScores(), new Label.LabelStyle(defaultFont, Color.GOLD));
-        else gameOver = new Label("You won!\nScore: "+Score.getScores(), new Label.LabelStyle(defaultFont, Color.GOLD));
+        gameOver = new Label((victory ? "You won" : "Game over") + "!\nScore: " + score, new Label.LabelStyle(defaultFont, Color.GOLD));
         gameOver.setPosition(Gdx.graphics.getWidth()/2 - gameOver.getWidth()/2, Gdx.graphics.getHeight()/2 + gameOver.getHeight() + mainButton.getHeight() + 1);
         stage.addActor(gameOver);
     }
