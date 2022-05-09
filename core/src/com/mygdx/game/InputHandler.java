@@ -13,7 +13,6 @@ public class InputHandler {
     }
 
     public static Vector2 getMousePosition() {
-
         return new Vector2(Gdx.input.getX(),Gdx.graphics.getHeight() - Gdx.input.getY());
     }
 }

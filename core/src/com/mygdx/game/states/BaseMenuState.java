@@ -26,7 +26,7 @@ public class BaseMenuState extends AbstractState{
            setCount.setText("Hunting until "+Integer.toString(ducks)+" ducks");
        }
        @Override
-       public void canceled () {}
+       public void canceled (){}
     }
 
     private Background bg;
@@ -64,7 +64,7 @@ public class BaseMenuState extends AbstractState{
 
     protected void handleInput() {
         if(setCount.isPressed()) {
-            Gdx.input.getTextInput(duckCountInput, "Playing before:", "3", "");
+            Gdx.input.getTextInput(duckCountInput, "Playing until:", "3", "");
             try{ Thread.sleep(1000);} catch(InterruptedException e){}
         }
     }

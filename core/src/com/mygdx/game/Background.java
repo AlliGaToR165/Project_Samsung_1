@@ -17,7 +17,7 @@ public class Background{
 
     public void update(float delta){
         out -= BG_MOVE_SPEED;
-        if((-out) >= length) out += length;
+        while((-out) >= length) out += length;
     }
 
     public void draw(SpriteBatch batch) {
