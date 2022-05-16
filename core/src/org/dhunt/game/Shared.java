@@ -1,6 +1,6 @@
-package com.mygdx.game;
+package org.dhunt.game;
 
-import com.mygdx.game.Background;
+import org.dhunt.game.Background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

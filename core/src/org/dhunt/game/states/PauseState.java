@@ -1,4 +1,4 @@
-package com.mygdx.game.states;
+package org.dhunt.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-import com.mygdx.game.states.PlayState;
-import com.mygdx.game.sprite.Duck;
-import com.mygdx.game.Shared;
+import org.dhunt.game.states.PlayState;
+import org.dhunt.game.sprite.Duck;
+import org.dhunt.game.Shared;
 
 public class PauseState extends AbstractState{
     private TextButton cont;

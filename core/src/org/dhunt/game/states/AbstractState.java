@@ -1,4 +1,4 @@
-package com.mygdx.game.states;
+package org.dhunt.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;

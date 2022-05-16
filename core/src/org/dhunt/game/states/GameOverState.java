@@ -1,4 +1,4 @@
-package com.mygdx.game.states;
+package org.dhunt.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
-import com.mygdx.game.InputHandler;
-import com.mygdx.game.Shared;
+import org.dhunt.game.InputHandler;
+import org.dhunt.game.Shared;
 
 public class GameOverState extends BaseMenuState{
     private Label gameOver;

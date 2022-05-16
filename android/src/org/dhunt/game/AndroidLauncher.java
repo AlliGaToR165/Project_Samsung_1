@@ -1,10 +1,10 @@
-package com.mygdx.game;
+package org.dhunt.game;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.MyGdxGame;
+import org.dhunt.game.MyGdxGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

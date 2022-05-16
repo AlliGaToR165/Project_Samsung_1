@@ -1,11 +1,11 @@
-package com.mygdx.game.states;
+package org.dhunt.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import com.mygdx.game.Shared;
+import org.dhunt.game.Shared;
 
 public class MenuState extends BaseMenuState{
     public MenuState(GameStateManager gsm) {

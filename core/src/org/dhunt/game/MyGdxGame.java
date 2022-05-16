@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package org.dhunt.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.states.GameStateManager;
-import com.mygdx.game.states.MenuState;
+import org.dhunt.game.states.GameStateManager;
+import org.dhunt.game.states.MenuState;
 
 
 public class MyGdxGame extends ApplicationAdapter {
