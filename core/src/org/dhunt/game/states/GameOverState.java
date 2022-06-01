@@ -21,6 +21,9 @@ public class GameOverState extends BaseMenuState{
         gameOver = new Label((victory ? "You won" : "Game over") + "!\nScore: " + score, new Label.LabelStyle(Shared.font, Color.GOLD));
         gameOver.setPosition(Shared.stage.getWidth()/2 - gameOver.getWidth()/2, Shared.stage.getHeight()/2 + gameOver.getHeight() + mainButton.getHeight() + 1);
         Shared.stage.addActor(gameOver);
+
+        theme = Gdx.audio.newSound(Gdx.files.internal("sound/"+(victory ? "Round Clear.mp3" : "Game Over.mp3")));
+        theme.play();
     }
 
     @Override

@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import com.badlogic.gdx.audio.Sound;
+
 import org.dhunt.game.InputHandler;
 import org.dhunt.game.sprite.Duck;
 import org.dhunt.game.Shared;
@@ -47,6 +49,11 @@ public class PlayState extends AbstractState{
     private float multiplier = 1;
     private Duck current;
     private Hud hud;
+    private Sound paused = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Pause.mp3")),
+                  shot   = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Gun Shot.mp3")),
+                  scount = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Counting Hits.mp3")),
+                  land   = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Dead Duck Lands.mp3"));
+
 
     private Duck generateDuck(){
         boolean isReversed = (boolean)MathUtils.randomBoolean();
@@ -81,6 +88,7 @@ public class PlayState extends AbstractState{
 
     private void handleInput(){
         if(pause.isPressed()){
+            paused.play();
             Shared.stage.clear();
             gsm.set(new PauseState(gsm, new PlayStateData(counter, score, current)));
         }
@@ -90,7 +98,7 @@ public class PlayState extends AbstractState{
     public void update(float delta) {
         Shared.bg.update(delta);
         current.update(delta);
-        if(current.isDead()) {current = generateDuck(); multiplier += 0.1;}
+        if(current.isDead()) {land.play(); current = generateDuck(); multiplier += 0.1;}
         handleInput();
     }
 
@@ -101,9 +109,11 @@ public class PlayState extends AbstractState{
         current.render(batch);
         if (InputHandler.isClicked()) {
             if (current.getBounds().contains(InputHandler.getMousePosition().x,InputHandler.getMousePosition().y)){
+                shot.play();
                 current.kill();
                 score++;
                 counter++;
+                scount.play();
             }
         }
 
@@ -136,5 +146,8 @@ public class PlayState extends AbstractState{
         current.dispose();
         grass.dispose();
         ground.dispose();
+        paused.dispose();
+        shot.dispose();
+        scount.dispose();
     }
 }

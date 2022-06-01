@@ -12,6 +12,8 @@ public class MenuState extends BaseMenuState{
         super(gsm, "START", "start_bg.png");
         mainButton.setPosition(Shared.stage.getWidth()/2 - mainButton.getWidth()/2, Shared.stage.getHeight()/2 + mainButton.getHeight() + 1);
         setCount.setPosition(Shared.stage.getWidth()/2 - setCount.getWidth()/2, Shared.stage.getHeight()/2 - setCount.getHeight() - 1);
+        theme = Gdx.audio.newSound(Gdx.files.internal("sound/Duck Hunt Intro.mp3"));
+        theme.play();
     }
 
     @Override

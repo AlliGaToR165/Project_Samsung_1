@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+//responsible for sound
+import com.badlogic.gdx.audio.Sound;
+
 import org.dhunt.game.Shared;
 
 public class BaseMenuState extends AbstractState{
@@ -25,6 +28,7 @@ public class BaseMenuState extends AbstractState{
 
     private DuckCountIL duckCountInput;
     protected TextButton mainButton, setCount;
+    protected Sound theme;
 
     public BaseMenuState(GameStateManager gsm, String buttonText, String buttonImgPath) {
         super(gsm);
@@ -57,11 +61,12 @@ public class BaseMenuState extends AbstractState{
     @Override
     public void render(SpriteBatch batch) {
         Shared.bg.draw(batch);
-        float delta = Gdx.graphics.getDeltaTime();
-        Shared.stage.act(delta);
+        Shared.stage.act(Gdx.graphics.getDeltaTime());
 	    Shared.stage.draw();
     }
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        theme.dispose();
+    }
 }
