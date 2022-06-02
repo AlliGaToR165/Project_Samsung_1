@@ -10,14 +10,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.audio.Sound;
 
 public class Duck {
-    private Texture texture;
+    private static Texture texture;
     private Vector2 position, velocity;
     private Rectangle bounds;
     private boolean isKilled, isReversed;
     private float time, angle = 0;
     private final int WIDTH = 252, HEIGHT = 256;
-    private Sound quack = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Duck Quack.mp3")),
-                  fall  = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Dead Duck Falls.mp3"));
+    private static Sound fall = Gdx.audio.newSound(Gdx.files.internal("sound/SFX- Dead Duck Falls.mp3"));
 
     public Duck(Vector2 position, Vector2 velocity, boolean isReversed) {
         this.position = position;
@@ -29,7 +28,6 @@ public class Duck {
 
         loadTexture();
         bounds = new Rectangle(position.x,position.y, WIDTH,HEIGHT);
-        quack.play();
     }
 
     public void render(SpriteBatch batch) {
@@ -40,7 +38,6 @@ public class Duck {
 
     public void dispose() {
         texture.dispose();
-        quack.dispose();
         fall.dispose();
     }
 
